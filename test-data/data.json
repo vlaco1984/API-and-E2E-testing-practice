@@ -3,5 +3,16 @@
     "listData": {
             "name": "My TOP Movies",
             "description": "best"
+    },
+    "invalidGuestID ": "invalid",
+    "emptyRatedBody": {
+        "page": 1,
+        "results": [],
+        "total_pages": 0,
+        "total_results": 0 
+    },
+    "seriesID": "1396",
+    "ratingValue": {
+        "value": 9
     }
 }
