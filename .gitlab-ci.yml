@@ -21,18 +21,13 @@ variables:
   MOVIEDB_ACCESS: "yI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.l69bunZBw-Ifr69_oG-6GBIb0F7FUFUJ-taXP2lcM3c"
 
 stages:          # List of stages for jobs, and their order of execution
-  - build
   - test
  
-
-build-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  script:
-    - npm ci
 
 test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
+    - npm ci
     - npm test
     - sleep 60
     - echo "Code coverage is 90%"
