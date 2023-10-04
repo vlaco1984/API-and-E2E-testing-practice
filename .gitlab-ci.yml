@@ -27,7 +27,7 @@ stages:          # List of stages for jobs, and their order of execution
 test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
-    - npm ci
+    - npm install
     - npm test
     - sleep 60
     - echo "Code coverage is 90%"
