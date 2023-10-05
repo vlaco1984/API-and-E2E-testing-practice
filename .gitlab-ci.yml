@@ -27,7 +27,6 @@ test-job:   # This job runs in the test stage.
   script:
     - npm ci
     - npm test
-    - sleep 60
-    - echo "Code coverage is 90%"
+
 
 
