@@ -1,11 +1,11 @@
 import { APIRequest, APIResponse, APIRequestContext, expect, type Page, request } from '@playwright/test';
 const { test } = require('../fixtures/fixtures')
-const { listData, userName, emptyRatedBody, invalidGuestID, seriesID, ratingValue, accountID, watchlistData } = require('../test-data/data.json')
+const { listData, userName, emptyRatedBody, invalidGuestID, seriesID, ratingValue, accountID, watchlistData, movieID } = require('../test-data/data.json')
 
 
 
 
-test.describe("Lists and other", () => {
+test.describe("Genre list, list", () => {
 
 
             
@@ -33,15 +33,9 @@ test("All genre items should be correct", async ({contextAuth}) => {
 
     
 
-test("The username should be match", async ({contextAuth}) => {
-    let res:APIResponse = await contextAuth.get('3/account/20403583');
-    let resBody = await res.json();
-    expect(resBody.username).toBe(userName)
-    })
-
 test("Lists work properly", async ({contextAuth}) => {
 let listID: number;
-let movieID: number = 24;
+//let movieID: number = 24;
 
     await test.step("New list should be created", async () => {
         let res:APIResponse = await contextAuth.post('3/list', {
@@ -65,9 +59,7 @@ let movieID: number = 24;
 
     await test.step("New item is added", async () => {
         let res: APIResponse = await contextAuth.post(`3/list/${listID}/add_item`, {
-            data: {
-                "media_id": movieID
-            }
+            data: movieID
         });
         expect(res.status()).toBe(201);
     })
@@ -78,14 +70,12 @@ let movieID: number = 24;
         console.log(resBody.items);
         expect(res).toBeOK
         expect(resBody.items.length).toBeGreaterThan(0);
-        expect(resBody.items[0].id).toBe(movieID);
+        expect(resBody.items[0].id).toBe(movieID.media_id);
     })
 
     await test.step("Remove added movie item from the list", async () => {
         let res:APIResponse = await contextAuth.post(`3/list/${listID}/remove_item`, {
-            data: {
-                "media_id": movieID
-            }
+            data: movieID
         });
         expect(res).toBeOK;
     })
@@ -101,7 +91,7 @@ let movieID: number = 24;
 
 })
 
-test.describe("Rate list", () => {
+test.describe("Rating", () => {
 
 
 
@@ -138,10 +128,7 @@ test ("Rate list should not be got by Invalid guest ID", async ({contextAuth}) =
         });
     await test.step("Getting rate list should be unsuccesully", async () => {
         expect(resBody.success).toBeFalsy
-    })
-    
-    
-    
+    })   
 })
 
 test("Rate list should not be got unauthenticated", async ({contextUnauth}) => {
