@@ -17,8 +17,6 @@
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
 image: node:latest
 
-variables:
-  MOVIEDB_ACCESS: "yI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.l69bunZBw-Ifr69_oG-6GBIb0F7FUFUJ-taXP2lcM3c"
 
 stages:          # List of stages for jobs, and their order of execution
   - test
