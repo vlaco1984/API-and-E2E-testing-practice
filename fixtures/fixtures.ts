@@ -1,12 +1,8 @@
 import { test as base, APIRequestContext, request, chromium } from '@playwright/test';
 import { movieDB_base } from '../po/po';
+import { setPage } from '../helpers/helper'
 
-async function setPage () {
-    let browser = await chromium.launch({ headless: false });
-    const context = await browser.newContext();
-    let page = await context.newPage();
-    return page;
-  };
+
 
 type MyFixtures = {
     contextAuth: APIRequestContext,
