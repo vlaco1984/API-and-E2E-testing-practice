@@ -1,6 +1,6 @@
 import { APIRequest, APIResponse, APIRequestContext, expect, type Page, request } from '@playwright/test';
 const { test } = require('../fixtures/fixtures')
-const { listData, userName, emptyRatedBody, invalidGuestID, seriesID, ratingValue, accountID, watchlistData, movieID } = require('../test-data/data.json')
+const { listData, userName, emptyRatedBody, invalidGuestID, seriesID, ratingValue, accountID, watchlistData, movieID, invalidData } = require('../test-data/data.json')
 
 
 
@@ -24,7 +24,7 @@ test("All genre items should be correct", async ({contextAuth}) => {
         })
     })
 
-    await test.step("All genre IDs should be string", async () => {
+    await test.step("All genre IDs should be number", async () => {
         listBody.genres.forEach(genreItem => {
         expect(typeof genreItem.id).toBe("number");
         })
@@ -35,7 +35,6 @@ test("All genre items should be correct", async ({contextAuth}) => {
 
 test("Lists work properly", async ({contextAuth}) => {
 let listID: number;
-//let movieID: number = 24;
 
     await test.step("New list should be created", async () => {
         let res:APIResponse = await contextAuth.post('3/list', {
@@ -69,7 +68,7 @@ let listID: number;
         let resBody = await res.json();
         console.log(resBody.items);
         expect(res).toBeOK
-        expect(resBody.items.length).toBeGreaterThan(0);
+        expect(resBody.items.length).toBe(1);
         expect(resBody.items[0].id).toBe(movieID.media_id);
     })
 
@@ -89,11 +88,28 @@ let listID: number;
 
 })
 
+test("List should not be created with invalid data", async ({contextAuth}) => {
+  
+    let res:APIResponse
+
+    await test.step("Send invalid data", async () => {
+        res = await contextAuth.post(`3/list`, {
+            data: invalidData
+            })
+        })
+
+    await test.step("Should be get unsuccessfully response code", async () => {
+        console.log(res.status())
+        expect(res).not.toBeOK
+        })   
+    
 })
 
+})
+
+
+
 test.describe("Rating", () => {
-
-
 
 test ("Empty rated movie list should be empty by default in guest session", async ({contextAuth}) => {
     let guestID;
@@ -153,19 +169,8 @@ test("Rate list should not be got unauthenticated", async ({contextUnauth}) => {
 
 test("Rated movie should be got in the response", async ({contextAuth}) => {
     let rateBody;
-    let guestID;
 
-    await test.step("Get guest ID", async () => {
-        let res:APIResponse = await contextAuth.get('3/authentication/guest_session/new')
-        let resBody = await res.json();
-        guestID = await resBody.guest_session_id
-        console.log(guestID)
-        expect(res).toBeOK
-    })
-
-    
-
-    await test.step("Add movie to rated list succesully", async () => {
+    await test.step("Add movie to rated list successfully", async () => {
         let res:APIResponse = await contextAuth.post(`3/tv/${seriesID}/rating`, {
             data: ratingValue
         });
@@ -174,7 +179,7 @@ test("Rated movie should be got in the response", async ({contextAuth}) => {
         console.log(resBody)
     })
 
-    await test.step("GET Rated Movies succesfully", async () => {
+    await test.step("GET Rated Movies successfully", async () => {
         let res:APIResponse = await contextAuth.get(`3/account/${accountID}/rated/tv`)
         expect(res).toBeOK;
         rateBody = await res.json();
@@ -183,6 +188,24 @@ test("Rated movie should be got in the response", async ({contextAuth}) => {
         expect(rateBody.results[0].rating).toBe(ratingValue.value);
     })
     
+})
+
+test("Rating should not be successfull by sending invalid data", async ({contextAuth}) => {
+    let res:APIResponse;
+   
+    await test.step("Sent movie to rated list", async () => {
+        res = await contextAuth.post(`3/tv/${seriesID}/rating`, {
+        data: invalidData
+        });
+    })
+
+    await test.step("Movie should not be rated", async () => {
+        expect(res).not.toBeOK;
+        let resBody = await res.json();
+        expect(resBody.success).toBe(false);
+        console.log(resBody);
+    })
+        
 })
 
 
@@ -219,7 +242,7 @@ test.describe("Watch lists", () => {
            expect(resBody.success).toBe(true)
         })
 
-        await test.step("Get watchlist", async () => {
+        await test.step("Get movies watchlist", async () => {
             let res:APIResponse = await contextAuth.get(`3/account/${accountID}/watchlist/movies`);
             expect(res).toBeOK;
             resBody = await res.json();
@@ -238,6 +261,22 @@ test.describe("Watch lists", () => {
 
         await test.step("TV series watchlist should be empty after adding movie to watchlist", () => {
             expect(resBody.results.length).toBe(0)
+        })
+    })
+
+    test("Invalid watchlist data sent should result unsuccessfully response", async ({contextAuth}) => {
+
+        let res:APIResponse
+
+        await test.step("Send invalid data", async () => {
+            res = await contextAuth.post(`3/account/${accountID}/watchlist/tv`, {
+                data: invalidData
+            })
+        })
+
+        await test.step("Should be get unsuccessfully response code", async () => {
+            console.log(await res.status())
+            expect(res).not.toBeOK
         })
     })
 

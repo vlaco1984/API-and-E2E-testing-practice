@@ -23,5 +23,8 @@
     },
     "movieID": {
         "media_id": 24
+    },
+    "invalidData": {
+        "invalid": "invalid"
     }
 }

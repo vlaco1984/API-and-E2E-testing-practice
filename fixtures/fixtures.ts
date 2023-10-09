@@ -1,9 +1,17 @@
-import { test as base, APIRequestContext, request } from '@playwright/test';
+import { test as base, APIRequestContext, request, chromium } from '@playwright/test';
+import { movieDB_base } from '../po/po';
 
+async function setPage () {
+    let browser = await chromium.launch({ headless: false });
+    const context = await browser.newContext();
+    let page = await context.newPage();
+    return page;
+  };
 
 type MyFixtures = {
     contextAuth: APIRequestContext,
-    contextUnauth: APIRequestContext    
+    contextUnauth: APIRequestContext
+    basePage: movieDB_base  
 }
 
 
@@ -19,6 +27,10 @@ const test = base.extend<MyFixtures>({
     contextUnauth: async({baseURL}, use) => {
         const contextUnauth = await request.newContext({baseURL});
         await use(contextUnauth)   
+    },
+    basePage: async({page}, use) => {
+        const basePage = new movieDB_base(await setPage(), 'https://api.themoviedb.org');
+        await use(basePage)
     }
    
 })
