@@ -4,7 +4,9 @@
   "description": "Practicing API testing on Movie DB",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "test api": "npx playwright test spec_api.ts",
+    "test ui": "npx playwright test spec_ui.ts"
   },
   "repository": {
     "type": "git",
