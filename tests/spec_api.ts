@@ -12,6 +12,8 @@ test.describe("Genre list, list", () => {
 test("All genre items should be correct", async ({contextAuth}) => {
     let listBody;
     
+    console.log(process.env.MOVIEDB_APIKEY)
+
     await test.step("Get genre list", async () => {
         let res = await contextAuth.get('3/genre/movie/list');
         listBody = await res.json();
@@ -156,12 +158,13 @@ test("Rate list should not be got unauthenticated", async ({contextUnauth}) => {
         let resBody = await res.json();
         guestID = await resBody.guest_session_id;
         expect(guestID);
-        expect(res).toBeOK;
+        expect(res).not.toBeOK();
     })
 
     await test.step("GET Rated Movies by ID not succesfully", async () => {
         let res:APIResponse = await contextUnauth.get(`3/guest_session/${guestID}/rated/movies`);
-        expect(res).toBeOK;
+        expect(res).not.toBeOK();
+        console.log(res.status())
         rateBody = await res.json();
         expect(rateBody.success).toBe(false)
     })
@@ -181,7 +184,7 @@ test("Rated movie should be got in the response", async ({contextAuth}) => {
 
     await test.step("GET Rated Movies successfully", async () => {
         let res:APIResponse = await contextAuth.get(`3/account/${accountID}/rated/tv`)
-        expect(res).toBeOK;
+        expect(res).toBeOK();
         rateBody = await res.json();
         console.log(rateBody);
         expect(rateBody.results[0].id).toBe(seriesID);
@@ -200,7 +203,7 @@ test("Rating should not be successfull by sending invalid data", async ({context
     })
 
     await test.step("Movie should not be rated", async () => {
-        expect(res).not.toBeOK;
+        expect(res).not.toBeOK();
         let resBody = await res.json();
         expect(resBody.success).toBe(false);
         console.log(resBody);
@@ -275,14 +278,26 @@ test.describe("Watch lists", () => {
         })
 
         await test.step("Should be get unsuccessfully response code", async () => {
-            console.log(await res.status())
             expect(res).not.toBeOK
         })
     })
-
-
-
 })
+
+test.describe("Movie details", () => {
+    test("Configuration details should be got unauthenticated", async ({contextUnauth}) => {
+        
+        let res:APIResponse
+
+        await test.step("Get Details", async () => {
+            res = await contextUnauth.get(`3/movie/${movieID.media_id}`)
+            console.log(await res.json())
+        }) 
+    })
+})
+
+
+
+
 
 
 

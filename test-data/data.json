@@ -26,5 +26,11 @@
     },
     "invalidData": {
         "invalid": "invalid"
-    }
+    },
+    "menuItems": [
+        "Movies",
+        "TV Shows",
+        "People",
+        "More"
+    ]
 }

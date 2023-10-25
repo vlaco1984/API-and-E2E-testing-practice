@@ -1,13 +1,14 @@
 import { test as base, APIRequestContext, request, chromium } from '@playwright/test';
-import { movieDB_base } from '../po/po';
+import { loginPage, movieDB_base } from '../po/po';
 import { setPage } from '../helpers/helper'
 
 
 
 type MyFixtures = {
-    contextAuth: APIRequestContext,
-    contextUnauth: APIRequestContext
-    basePage: movieDB_base  
+    contextAuth: APIRequestContext;
+    contextUnauth: APIRequestContext;
+    pageAuth: loginPage;
+    pageUnauth: movieDB_base;  
 }
 
 
@@ -21,14 +22,26 @@ const test = base.extend<MyFixtures>({
         await use(contextAuth)
     },
     contextUnauth: async({baseURL}, use) => {
-        const contextUnauth = await request.newContext({baseURL});
+        const contextUnauth = await request.newContext({baseURL, extraHTTPHeaders: {
+            'Authorization': `Bearer ${process.env.MOVIEDB_APIKEY}`,
+            'accept': 'application/json'
+        }});
         await use(contextUnauth)   
     },
-    basePage: async({page}, use) => {
-        const basePage = new movieDB_base(await setPage(), 'https://api.themoviedb.org');
-        await use(basePage)
+    pageAuth: async({page}, use) => {
+        const pageAuth = new loginPage(await setPage(), "https://www.themoviedb.org/login");
+        await pageAuth.openPage();
+        await pageAuth.inputName.fill(`${process.env.MOVIEDB_USER}`);
+        await pageAuth.inputPass.fill(`${process.env.MOVIEDB_PASS}`);
+        await pageAuth.loginButton.click();
+        await use (pageAuth);
+    },
+    pageUnauth: async ({page}, use) => {
+        const pageUnauth = new movieDB_base(await setPage(), "https://www.themoviedb.org");
+        await pageUnauth.openPage();
+        await use (pageUnauth);
     }
-   
+      
 })
 
 
