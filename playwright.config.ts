@@ -24,7 +24,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://api.themoviedb.org',
+    //baseURL: 'https://api.themoviedb.org',
 
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
@@ -34,23 +34,20 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'api',
+      use: { baseURL: 'https://api.themoviedb.org/' },
+      testMatch: /.*spec_api.ts/
     },
 
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      name: 'ui',
+      use: { baseURL: 'https://www.themoviedb.org/' },
+      testMatch: /.*spec_ui.ts/
     },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    
 
-    {
-      testMatch: /.*\.ts/
-    },
+    
     
 
     /* Test against mobile viewports. */

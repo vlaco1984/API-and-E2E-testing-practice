@@ -27,10 +27,10 @@
     "invalidData": {
         "invalid": "invalid"
     },
-    "menuItems": [
-        "Movies",
-        "TV Shows",
-        "People",
-        "More"
+    "menu": [
+        "Filmek",
+        "Tévéműsorok",
+        "Emberek",
+        "Több"
     ]
 }
