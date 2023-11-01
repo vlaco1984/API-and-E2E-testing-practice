@@ -20,11 +20,13 @@ image: gitlab/gitlab-ee:latest
 
 
 
+
 stages:          # List of stages for jobs, and their order of execution
   - test
  
 
 test-job:   # This job runs in the test stage.
+  image: node:latest
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - npm ci
