@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { menu } from '../test-data/data.json'
+import { menuEN, menuHU } from '../test-data/data.json'
  
 
 export class movieDB_base {
@@ -12,6 +12,7 @@ export class movieDB_base {
   readonly menu: Locator;
   readonly cookieAccept: Locator;
   menuItems: any;
+  langSel: any;
   
  
 
@@ -26,6 +27,9 @@ export class movieDB_base {
     this.glass = page.locator('span.glyphicons_v2.search.blue')
     this.cookieAccept = page.locator('button#onetrust-accept-btn-handler')
     this.menu = page.locator('a.no_click.k-link.k-menu-link')
+    this.langSel = (itemText: string): Locator => {
+      return page.locator('li.translate', { hasText: itemText})
+    }
   }
 
 
@@ -37,11 +41,15 @@ export class movieDB_base {
     };
   
   async checkMenuItems () {
+    let menu;
+    let langRaw = await this.langSel().textContent()
+    let lang = await langRaw.trim()
+    switch (lang) {
+      case 'en': menu = menuEN; break
+      case 'hu': menu = menuHU; break 
+    }
     console.log(menu)
     menu.forEach(async menuItem => {
-      //this.itemText = menuItem;
-      //console.log(this.itemText);
-    // await this.menu.click()
     await expect(this.menuItems(menuItem)).toBeVisible();
     });
   }
