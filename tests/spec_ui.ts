@@ -9,10 +9,15 @@ const { menuItems } = require('../test-data/data.json')
 let page
 let currentPage
 
-test('All menu items should be visible', async({pageAuth}) => {
-    await test.step('Click on TV series', async () => {
-    await pageAuth.checkMenuItems();
+test('All menu items are correct', async({pageUnauth}) => {
+    await test.step('Menuitems should be visible', async () => {
+    await pageUnauth.checkMenuItems();
    });
 })
 
-
+test('The language should change automatically after authentication', async ({pageAuth}) => {
+    await test.step('The language should should change to HU', async () => {
+    let actualLang = await pageAuth.setLang()
+    expect(actualLang).toBe('hu')
+    })
+})

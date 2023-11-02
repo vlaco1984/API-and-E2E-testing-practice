@@ -1,5 +1,5 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-import { menuEN, menuHU } from '../test-data/data.json'
+import {  en, hu } from '../test-data/data.json'
  
 
 export class movieDB_base {
@@ -33,22 +33,26 @@ export class movieDB_base {
   }
 
 
-
+ 
   
   async openPage () {
     await this.page.goto(this.URL);
     //await expect(this.page).toHaveURL(this.URL)
     };
   
-  async checkMenuItems () {
-    let menu;
+  
+  async setLang () {
     let langRaw = await this.langSel().textContent()
     let lang = await langRaw.trim()
     switch (lang) {
-      case 'en': menu = menuEN; break
-      case 'hu': menu = menuHU; break 
+      case 'en': return en;
+      case 'hu': return hu;    
     }
-    console.log(menu)
+  }
+  
+  async checkMenuItems () {
+    let lang = await this.setLang()
+    let menu = lang.menuData
     menu.forEach(async menuItem => {
     await expect(this.menuItems(menuItem)).toBeVisible();
     });

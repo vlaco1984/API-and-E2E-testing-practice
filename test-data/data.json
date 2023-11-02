@@ -27,16 +27,22 @@
     "invalidData": {
         "invalid": "invalid"
     },
-    "menuHU": [
-        "Filmek",
-        "Tévéműsorok",
-        "Emberek",
-        "Több"
-    ],
-    "menuEN": [
-        "Movies",
-        "TV Shows",
-        "People",
-        "More"
-    ]
+
+    "en": {
+        "menuData": [
+            "Movies",
+            "TV Shows",
+            "People",
+            "More"
+        ]
+    },
+    "hu": {
+        "menuData": [
+            "Filmek",
+            "Tévéműsorok",
+            "Emberek",
+            "Több"
+        ] 
+    }
+   
 }
