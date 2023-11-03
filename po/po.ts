@@ -1,5 +1,5 @@
-import { expect, type Locator, type Page } from '@playwright/test';
-import {  en, hu } from '../test-data/data.json'
+import { expect, type Locator, type Page, type Keyboard } from '@playwright/test';
+import data from '../test-data/data.json'
  
 
 export class movieDB_base {
@@ -13,6 +13,10 @@ export class movieDB_base {
   readonly cookieAccept: Locator;
   menuItems: any;
   langSel: any;
+  readonly defaultLang: Locator;
+  readonly defaultLangInput: Locator;
+  readonly pageRefresh: Locator;
+  langDropdownItem: any
   
  
 
@@ -30,9 +34,17 @@ export class movieDB_base {
     this.langSel = (itemText: string): Locator => {
       return page.locator('li.translate', { hasText: itemText})
     }
+    this.defaultLang = page.locator('label#default_language_popup_label')
+    this.defaultLangInput = page.locator('input.k-textbox[aria-owns=default_language_popup_listbox]')
+    this.pageRefresh = page.locator('a.no_click.button.rounded.upcase')
+    this.langDropdownItem  = (itemText: string): Locator => {
+      return page.locator('li.k-item.k-state-selected.k-state-focused', { hasText: itemText})
+    }
   }
 
-
+  async pressButton(key) {
+    await this.page.keyboard.press(key)
+  }
  
   
   async openPage () {
@@ -41,17 +53,13 @@ export class movieDB_base {
     };
   
   
-  async setLang () {
+  async getLang ():Promise<string> {
     let langRaw = await this.langSel().textContent()
-    let lang = await langRaw.trim()
-    switch (lang) {
-      case 'en': return en;
-      case 'hu': return hu;    
-    }
+    return await langRaw.trim()
   }
   
   async checkMenuItems () {
-    let lang = await this.setLang()
+    let lang = data[await this.getLang()]
     let menu = lang.menuData
     menu.forEach(async menuItem => {
     await expect(this.menuItems(menuItem)).toBeVisible();
