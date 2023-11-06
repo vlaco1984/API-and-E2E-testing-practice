@@ -1,4 +1,4 @@
-import { test as base, APIRequestContext, request, chromium } from '@playwright/test';
+import { test as base, APIRequestContext, request, chromium, expect } from '@playwright/test';
 import { loginPage, movieDB_base } from '../po/po';
 import { setPage } from '../helpers/helper'
 
@@ -30,16 +30,14 @@ const test = base.extend<MyFixtures>({
     },
     pageAuth: async({page}, use) => {
         const pageAuth = new loginPage(await setPage(), "login");
-        await pageAuth.openPage();
-        await pageAuth.inputName.fill(`${process.env.MOVIEDB_USER}`);
-        await pageAuth.inputPass.fill(`${process.env.MOVIEDB_PASS}`);
-        await pageAuth.loginButton.click();
-        await pageAuth.cookieAccept.click();
+        await pageAuth.login();
+        await pageAuth.setDefLang();
         await use (pageAuth);
     },
     pageUnauth: async ({page}, use) => {
         const pageUnauth = new movieDB_base(await setPage(), "");
         await pageUnauth.openPage();
+        await pageUnauth.setDefLang();
         await use (pageUnauth);
     }
       

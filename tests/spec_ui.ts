@@ -10,28 +10,25 @@ let page
 let currentPage
 
 
-test('All menu items are correct', async({pageUnauth}) => {
-    await test.step('Menuitems should be visible', async () => {
-    await pageUnauth.checkMenuItems();
-   });
-})
+
+
+
+
 
 test('The language switcher should work properly', async ({pageAuth}) => {
     
     await test.step('The language should should be English', async () => {
     let actualLang = await pageAuth.getLang()
-    expect(actualLang).toBe('en')
+    await expect(await pageAuth.langSel('en')).toBeVisible()
+    console.log('angol'+await pageAuth.langSel().textContent())
     })
 
     await test.step('Menu items should be in English', async () => {
     await pageAuth.checkMenuItems()
     })
 
-    await test.step('Click on lang switcher and select English as default lang', async () => {
-    await pageAuth.langSel().click()      // methodba kimozgatni
-    await pageAuth.defaultLang.click()
-    await pageAuth.defaultLangInput.fill('Hungarian')
-    await pageAuth.pressButton('Enter')
+    await test.step('Click on lang switcher and select Hungarian as default lang', async () => {
+    await pageAuth.setLang("Hungarian (hu-HU)")
     })
 
     await test.step('Reload page', async () => {
@@ -39,15 +36,22 @@ test('The language switcher should work properly', async ({pageAuth}) => {
     })
 
     await test.step('The language should be Hungarian', async () => {
-    let actualLang = await pageAuth.setLang();
-    expect(actualLang).toBe('hu')
+    let actualLang = await pageAuth.getLang();
+    await expect(await pageAuth.langSel()).toHaveText('hu')
+    console.log('magyar'+await pageAuth.langSel().textContent())
     })
 
     await test.step('The menu items should be in Hungarian', async () => {
     await pageAuth.checkMenuItems()
     })
 
-
-
-
 })
+
+test('Search', async ({pageUnauth}) => {
+    
+    await test.step('Clicking on the search icon', async () => {
+    await pageUnauth.glass.click()
+    })
+})
+
+
