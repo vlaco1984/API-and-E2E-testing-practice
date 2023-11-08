@@ -35,13 +35,6 @@ test-job:   # This job runs in the test stage.
     paths:
       - my-report/
 
-build image:
-  image: docker
-  services:
-    - docker:dind
-  script:
-    - docker login registry.gitlab.com
-
 
 
 
