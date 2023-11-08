@@ -3,15 +3,7 @@ import { movieDB_base } from "../po/po";
 const { expect } = require('@playwright/test');
 const { test } = require('../fixtures/fixtures')
 const { menuItems } = require('../test-data/data.json')
-
-
-
-let page
-let currentPage
-
-
-
-
+import data from '../test-data/data.json'
 
 
 
@@ -47,11 +39,50 @@ test('The language switcher should work properly', async ({pageAuth}) => {
 
 })
 
-test('Search', async ({pageUnauth}) => {
+test('Autocomplete should work properly with valid search term', async ({pageUnauth}) => {
     
-    await test.step('Clicking on the search icon', async () => {
-    await pageUnauth.glass.click()
+    await test.step('Clicking on the search icon to open search bar', async () => {
+        await pageUnauth.glass.click()
+        })
+
+    await test.step('Type search term into search input field', async () => {
+        await pageUnauth.searchBar.click();
+        await pageUnauth.searchBar.fill(data.searchTerm);
+        await expect(pageUnauth.searchSugList(data.searchTerm)).toBeVisible();
+    })
+
+    await test.step('Search suggestions should include the given term', async () => {
+       await pageUnauth.checkSearchSuggestions(data.searchTerm) 
     })
 })
+
+test('Autocomplete has no result in case of search term containing special characters', async ({pageUnauth}) => {
+    await test.step('Clicking on the search icon to open search bar', async () => {
+        await pageUnauth.glass.click()
+        })
+
+    await test.step('Type search term into search input field', async () => {
+        await pageUnauth.searchBar.click();
+        await pageUnauth.searchBar.fill(data.searchTermSpecialChar);
+    })
+
+    await test.step('No result text should be visible', async () => {
+        await expect(await pageUnauth.noSuggestion(await pageUnauth.getNoResPath())).toBeVisible()
+    })
+})
+
+test('Search should work properly with valid search term', async ({pageSearch}) => {
+
+    await test.step('Execute search with given term', async () => {
+        await pageSearch.executeSearch(data.searchTerm)
+    })
+
+    await test.step('Search result items should include the given term', async () => {
+        await pageSearch.checkSearchResults(data.searchTerm)
+        
+    })
+
+})
+
 
 

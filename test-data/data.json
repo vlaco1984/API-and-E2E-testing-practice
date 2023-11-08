@@ -34,7 +34,8 @@
             "TV Shows",
             "People",
             "More"
-        ]
+        ],
+        "noResultMessage": "No result"
     },
     "hu": {
         "menuData": [
@@ -42,7 +43,10 @@
             "Tévéműsorok",
             "Emberek",
             "Több"
-        ] 
-    }
+        ],
+        "noResultMessage": "Nincs eredmény"
+    },
+    "searchTerm": "star",
+    "searchTermSpecialChar": "/,"
    
 }

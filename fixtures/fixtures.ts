@@ -1,5 +1,5 @@
 import { test as base, APIRequestContext, request, chromium, expect } from '@playwright/test';
-import { loginPage, movieDB_base } from '../po/po';
+import { loginPage, movieDB_base, searchPage } from '../po/po';
 import { setPage } from '../helpers/helper'
 
 
@@ -8,7 +8,8 @@ type MyFixtures = {
     contextAuth: APIRequestContext;
     contextUnauth: APIRequestContext;
     pageAuth: loginPage;
-    pageUnauth: movieDB_base;  
+    pageUnauth: movieDB_base;
+    pageSearch: searchPage  
 }
 
 
@@ -39,6 +40,12 @@ const test = base.extend<MyFixtures>({
         await pageUnauth.openPage();
         await pageUnauth.setDefLang();
         await use (pageUnauth);
+    },
+    pageSearch: async ({page}, use) => {
+        const pageSearch = new searchPage(await setPage(), "search");
+        await pageSearch.openPage();
+        await pageSearch.setDefLang();
+        await use (pageSearch);
     }
       
 })

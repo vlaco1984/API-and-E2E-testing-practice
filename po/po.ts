@@ -16,7 +16,11 @@ export class movieDB_base {
   readonly defaultLangInput: Locator;
   readonly pageRefresh: Locator;
   langDropdownItem: any;
-  cookieBar: Locator
+  readonly cookieBar: Locator
+  readonly searchBar: Locator
+  searchSugList: any
+  readonly searchSugListItem: Locator
+  noSuggestion: any
   
  
 
@@ -40,7 +44,15 @@ export class movieDB_base {
     this.langDropdownItem  = (itemText: string): Locator => {
       return page.locator("#default_language_popup_listbox").getByRole('option', { name: itemText })
     },
-    this.cookieBar = page.locator('#onetrust-policy') 
+    this.cookieBar = page.locator('#onetrust-policy'),
+    this.searchBar = page.locator('input#search_v4.k-input')
+    this.searchSugList = (itemText: string): Locator => {
+      return page.locator('#search_v4_listbox', { hasText: itemText})
+    }
+    this.searchSugListItem = page.locator('#search_v4_listbox > li')
+    this.noSuggestion = (itemText: string): Locator =>  {
+      return page.locator('div.k-nodata', { hasText: itemText })
+    }
   }
 
   async pressButton(key) {
@@ -50,15 +62,12 @@ export class movieDB_base {
 
   async setLang (lang) {
     for (let i=0; i<Infinity; i++) {
-      if (await this.defaultLang.isVisible()) {
-      await this.langSel().click();
+      if (!await this.defaultLang.isVisible()) {
+        await this.langSel().click()
       } else {
         break;
       }
-    }
-    
-    
-    await this.langSel().click();     
+    }     
     await this.defaultLang.click();
     await this.defaultLangInput.fill(lang);
     await this.langDropdownItem(lang).click();
@@ -83,18 +92,40 @@ export class movieDB_base {
     };
   }
   
-  async getDataPath () {
+  async getMenuPath () {
     let lang = data[await this.getLang()]
     return lang.menuData
   }
 
+  async getNoResPath () {
+    let lang = data[await this.getLang()]
+    return lang.noResultMessage
+  }
+
   async checkMenuItems () {
-    let menu = await this.getDataPath()
+    let menu = await this.getMenuPath()
     console.log(menu)
     menu.forEach(async menuItem => {
     await expect(await this.menuItems(menuItem)).toBeVisible();
     });
   }
+
+  
+
+async getSearchSuggestions () {
+let list = await this.searchSugListItem.allTextContents();
+//let texts = await rawTexts.forEach(async rawText => {
+//await rawText.trim()
+//});
+return list
+}
+
+async checkSearchSuggestions (term) {
+let list = await this.getSearchSuggestions ()
+list.forEach(listItem => {
+  expect(listItem.toLowerCase()).toContain(term.toLowerCase())
+})
+}
 
 }
 
@@ -104,8 +135,8 @@ export class loginPage extends movieDB_base {
   readonly loginButton: Locator;
   
   constructor (page: Page, URL: string) {
-    super (page, URL)
-    this.URL = URL
+    super (page, URL);
+    this.URL = URL;
     this.inputName = page.locator('input#username')
     this.inputPass = page.locator('input#password')
     this.loginButton = page.locator('input#login_button')
@@ -121,5 +152,38 @@ export class loginPage extends movieDB_base {
   }
 
   
+
+}
+
+export class searchPage extends movieDB_base {
+  readonly searchResultPanel: Locator
+  searchResultItem: any
+  
+  constructor (page: Page, URL: string) {
+    super (page, URL);
+    this.URL = URL;
+    this.searchResultPanel = page.locator('div#search_menu_scroller');
+    this.searchResultItem = (itemText: string):Locator => {
+    return page.locator('div.title',{ hasText: itemText})
+   }
+  }
+
+  async executeSearch (term) {
+    await this.searchBar.fill(term)
+    await this.page.keyboard.press('Enter')
+    await expect(this.searchResultPanel).toBeVisible()
+  }
+
+  async getSearchResults () {
+    let list = await this.searchResultItem().allTextContents();
+    return await list
+    }
+  
+  async checkSearchResults (term) {
+    let list = await this.getSearchResults ()
+    list.forEach(listItem => {
+    expect(listItem.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '')).toContain(term.toLowerCase())
+    })
+  }
 
 }
