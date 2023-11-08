@@ -27,6 +27,7 @@ stages:          # List of stages for jobs, and their order of execution
 
 test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
+  image: mcr.microsoft.com/playwright:v1.37.1-focal
   script:
     - npm ci
     - npm run test_api

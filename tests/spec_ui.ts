@@ -6,7 +6,8 @@ const { menuItems } = require('../test-data/data.json')
 import data from '../test-data/data.json'
 
 
-
+test.describe('Language switcher', async () => {
+    
 test('The language switcher should work properly', async ({pageAuth}) => {
     
     await test.step('The language should should be English', async () => {
@@ -36,8 +37,10 @@ test('The language switcher should work properly', async ({pageAuth}) => {
     await test.step('The menu items should be in Hungarian', async () => {
     await pageAuth.checkMenuItems()
     })
-
 })
+})
+
+test.describe('Search', async () => {
 
 test('Autocomplete should work properly with valid search term', async ({pageUnauth}) => {
     
@@ -83,6 +86,6 @@ test('Search should work properly with valid search term', async ({pageSearch}) 
     })
 
 })
-
+})
 
 
