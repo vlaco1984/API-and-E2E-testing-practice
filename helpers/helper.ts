@@ -6,7 +6,7 @@ let browser;
 
 
 export async function setPage () {
-    browser = await chromium.launch({ headless: false });
+    browser = await chromium.launch({ headless: true });
     const context = await browser.newContext();
     let page = await context.newPage();
     return page;
