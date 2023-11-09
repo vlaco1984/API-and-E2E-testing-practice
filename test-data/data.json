@@ -35,7 +35,8 @@
             "People",
             "More"
         ],
-        "noResultMessage": "No result"
+        "noResultMessage": "No result",
+        "noSearchResultMessage": "There are no movies that matched your query."
     },
     "hu": {
         "menuData": [
@@ -44,7 +45,8 @@
             "Emberek",
             "Több"
         ],
-        "noResultMessage": "Nincs eredmény"
+        "noResultMessage": "Nincs eredmény",
+        "noSearchResultMessage": "Nincs a keresésnek megfelelő film."
     },
     "searchTerm": "star",
     "searchTermSpecialChar": "/,"

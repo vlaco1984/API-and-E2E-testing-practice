@@ -1,5 +1,4 @@
 import { movieDB_base } from "../po/po";
-// const { setPage } = require("../helpers/helper")
 const { expect } = require('@playwright/test');
 const { test } = require('../fixtures/fixtures')
 const { menuItems } = require('../test-data/data.json')
@@ -11,32 +10,28 @@ test.describe('Language switcher', async () => {
 test('The language switcher should work properly', async ({pageAuth}) => {
     
     await test.step('The language should should be English', async () => {
-    let actualLang = await pageAuth.getLang()
-    await expect(await pageAuth.langSel('en')).toBeVisible()
-    console.log('angol'+await pageAuth.langSel().textContent())
-    })
+        await expect(await pageAuth.langSel('en')).toBeVisible();
+        })
 
     await test.step('Menu items should be in English', async () => {
-    await pageAuth.checkMenuItems()
-    })
+        await pageAuth.checkMenuItems();
+        })
 
     await test.step('Click on lang switcher and select Hungarian as default lang', async () => {
-    await pageAuth.setLang("Hungarian (hu-HU)")
-    })
+        await pageAuth.setLang("Hungarian (hu-HU)");
+        })
 
     await test.step('Reload page', async () => {
-    await pageAuth.pageRefresh.click()
-    })
+        await pageAuth.pageRefresh.click();
+        })
 
     await test.step('The language should be Hungarian', async () => {
-    let actualLang = await pageAuth.getLang();
-    await expect(await pageAuth.langSel()).toHaveText('hu')
-    console.log('magyar'+await pageAuth.langSel().textContent())
-    })
+        await expect(await pageAuth.langSel()).toHaveText('hu')
+        })
 
     await test.step('The menu items should be in Hungarian', async () => {
-    await pageAuth.checkMenuItems()
-    })
+        await pageAuth.checkMenuItems()
+         })
 })
 })
 
@@ -78,14 +73,14 @@ test('Search should work properly with valid search term', async ({pageSearch}) 
 
     await test.step('Execute search with given term', async () => {
         await pageSearch.executeSearch(data.searchTerm)
-    })
+    });
 
     await test.step('Search result items should include the given term', async () => {
-        await pageSearch.checkSearchResults(data.searchTerm)
-        
-    })
+        await pageSearch.checkSearchResults(data.searchTerm) 
+    });
 
 })
+
 })
 
 

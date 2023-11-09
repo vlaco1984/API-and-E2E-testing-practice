@@ -37,7 +37,7 @@ export class movieDB_base {
     this.menu = page.locator('a.no_click.k-link.k-menu-link')
     this.langSel = (itemText: string): Locator => {
       return page.locator('li.translate', { hasText: itemText})
-    }
+    },
     this.defaultLang = page.locator('label#default_language_popup_label')
     this.defaultLangInput = page.locator('input.k-textbox[aria-owns=default_language_popup_listbox]')
     this.pageRefresh = page.locator('a.no_click.button.rounded.upcase')
@@ -48,7 +48,7 @@ export class movieDB_base {
     this.searchBar = page.locator('input#search_v4.k-input')
     this.searchSugList = (itemText: string): Locator => {
       return page.locator('#search_v4_listbox', { hasText: itemText})
-    }
+    },
     this.searchSugListItem = page.locator('#search_v4_listbox > li')
     this.noSuggestion = (itemText: string): Locator =>  {
       return page.locator('div.k-nodata', { hasText: itemText })
@@ -114,9 +114,6 @@ export class movieDB_base {
 
 async getSearchSuggestions () {
 let list = await this.searchSugListItem.allTextContents();
-//let texts = await rawTexts.forEach(async rawText => {
-//await rawText.trim()
-//});
 return list
 }
 
@@ -158,20 +155,22 @@ export class loginPage extends movieDB_base {
 export class searchPage extends movieDB_base {
   readonly searchResultPanel: Locator
   searchResultItem: any
+  searchResultList: Locator;
   
   constructor (page: Page, URL: string) {
     super (page, URL);
     this.URL = URL;
     this.searchResultPanel = page.locator('div#search_menu_scroller');
+    this.searchResultList = page.locator('div.search_results movie')
     this.searchResultItem = (itemText: string):Locator => {
     return page.locator('div.title',{ hasText: itemText})
    }
   }
 
   async executeSearch (term) {
-    await this.searchBar.fill(term)
-    await this.page.keyboard.press('Enter')
-    await expect(this.searchResultPanel).toBeVisible()
+    await this.searchBar.fill(term);
+    await this.page.keyboard.press('Enter');
+    await expect(this.searchResultPanel).toBeVisible();
   }
 
   async getSearchResults () {
@@ -187,3 +186,5 @@ export class searchPage extends movieDB_base {
   }
 
 }
+
+
