@@ -22,6 +22,7 @@ image: node:latest
 
 stages:          # List of stages for jobs, and their order of execution
   - test
+  - build image
 
  
 
