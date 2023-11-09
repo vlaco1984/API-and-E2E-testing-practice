@@ -23,7 +23,6 @@ image: node:latest
 stages:          # List of stages for jobs, and their order of execution
   - test
   - build image
-
  
 
 test-job:   # This job runs in the test stage.
@@ -35,13 +34,9 @@ test-job:   # This job runs in the test stage.
     paths:
       - my-report/
 
- build image:
+build image:
   image: docker
   services:
     - docker:dind
   script:
     - docker login registry.gitlab.com
- 
-
-
-
