@@ -92,18 +92,18 @@ export class movieDB_base {
     };
   }
   
-  async getMenuPath () {
+  async getMenuData () {
     let lang = data[await this.getLang()]
     return lang.menuData
   }
 
-  async getNoResPath () {
+  async getNoResData () {
     let lang = data[await this.getLang()]
     return lang.noResultMessage
   }
 
   async checkMenuItems () {
-    let menu = await this.getMenuPath()
+    let menu = await this.getMenuData()
     console.log(menu)
     menu.forEach(async menuItem => {
     await expect(await this.menuItems(menuItem)).toBeVisible();
@@ -147,8 +147,6 @@ export class loginPage extends movieDB_base {
   await this.cookieAccept.click();
   await expect(this.cookieBar).not.toBeVisible()
   }
-
-  
 
 }
 

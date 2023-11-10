@@ -31,4 +31,4 @@ test-job:   # This job runs in the test stage.
     - npm run test_api
   artifacts:
     paths:
-      - my-report/
+      - ../my-report/index.html
