@@ -30,5 +30,6 @@ test-job:   # This job runs in the test stage.
     - npm ci
     - npm run test_ui
   artifacts:
+    when: always
     paths:
       - my-report/
