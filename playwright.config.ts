@@ -38,7 +38,7 @@ export default defineConfig({
     {
       name: 'api',
       use: { baseURL: 'https://api.themoviedb.org/' },
-      testMatch: /.*spec_api.ts/
+      testMatch: /.*spec_api.ts/,
     },
 
     {
