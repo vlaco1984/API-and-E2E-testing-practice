@@ -74,8 +74,6 @@ export class movieDB_base {
     await this.pageRefresh.click()
   }
 
-
-  
   async openPage () {
     await this.page.goto(this.URL);
     };
@@ -102,27 +100,12 @@ export class movieDB_base {
     return lang.noResultMessage
   }
 
-  async checkMenuItems () {
-    let menu = await this.getMenuData()
-    console.log(menu)
-    menu.forEach(async menuItem => {
-    await expect(await this.menuItems(menuItem)).toBeVisible();
-    });
-  }
-
   
-
 async getSearchSuggestions () {
 let list = await this.searchSugListItem.allTextContents();
 return list
 }
 
-async checkSearchSuggestions (term) {
-let list = await this.getSearchSuggestions ()
-list.forEach(listItem => {
-  expect(listItem.toLowerCase()).toContain(term.toLowerCase())
-})
-}
 
 }
 
@@ -145,7 +128,6 @@ export class loginPage extends movieDB_base {
   await this.inputPass.fill(`${process.env.MOVIEDB_PASS}`);
   await this.loginButton.click();
   await this.cookieAccept.click();
-  await expect(this.cookieBar).not.toBeVisible()
   }
 
 }
@@ -168,7 +150,7 @@ export class searchPage extends movieDB_base {
   async executeSearch (term) {
     await this.searchBar.fill(term);
     await this.page.keyboard.press('Enter');
-    await expect(this.searchResultPanel).toBeVisible();
+    await this.searchResultPanel.waitFor({state: "visible"})
   }
 
   async getSearchResults () {

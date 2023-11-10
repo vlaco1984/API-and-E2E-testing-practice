@@ -14,9 +14,12 @@ test('The language switcher should work properly', async ({pageAuth}) => {
         })
 
     await test.step('Menu items should be in English', async () => {
-        await pageAuth.checkMenuItems();
-        })
-
+        let menu = await pageAuth.getMenuData();
+        menu.forEach(async menuItem => {
+            await expect(await pageAuth.menuItems(menuItem)).toBeVisible();
+            });
+        });
+        
     await test.step('Click on lang switcher and select Hungarian as default lang', async () => {
         await pageAuth.setLang("Hungarian (hu-HU)");
         })
@@ -30,10 +33,14 @@ test('The language switcher should work properly', async ({pageAuth}) => {
         })
 
     await test.step('The menu items should be in Hungarian', async () => {
-        await pageAuth.checkMenuItems()
-         })
+        let menu = await pageAuth.getMenuData();
+        menu.forEach(async menuItem => {
+            await expect(await pageAuth.menuItems(menuItem)).toBeVisible();
+            });
+        })
+    })
 })
-})
+
 
 test.describe('Search', async () => {
 
@@ -50,7 +57,10 @@ test('Autocomplete should work properly with valid search term', async ({pageUna
     })
 
     await test.step('Search suggestions should include the given term', async () => {
-       await pageUnauth.checkSearchSuggestions(data.searchTerm) 
+        let list = await pageUnauth.getSearchSuggestions ()
+        list.forEach(listItem => {
+          expect(listItem.toLowerCase()).toContain(data.searchTerm.toLowerCase())
+        })
     })
 })
 
@@ -65,7 +75,7 @@ test('Autocomplete has no result in case of search term containing special chara
     })
 
     await test.step('No result text should be visible', async () => {
-        await expect(await pageUnauth.noSuggestion(await pageUnauth.getNoResPath())).toBeVisible()
+        await expect(await pageUnauth.noSuggestion(await pageUnauth.getNoResData())).toBeVisible()
     })
 })
 
