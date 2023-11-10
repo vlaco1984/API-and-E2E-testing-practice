@@ -34,7 +34,7 @@ test("All genre items should be correct", async ({contextAuth}) => {
 })
 
     
-/*
+
 test("Lists work properly", async ({contextAuth}) => {
 let listID: number;
 
@@ -90,7 +90,7 @@ let listID: number;
 
 })
 
-*/
+
 
 test("List should not be created with invalid data", async ({contextAuth}) => {
   
