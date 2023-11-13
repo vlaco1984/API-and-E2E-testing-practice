@@ -19,7 +19,7 @@ test('The language switcher should work properly', async ({pageAuth}) => {
             await expect(await pageAuth.menuItems(menuItem)).toBeVisible();
             });
         });
-        
+
     await test.step('Click on lang switcher and select Hungarian as default lang', async () => {
         await pageAuth.setLang("Hungarian (hu-HU)");
         })
@@ -47,7 +47,7 @@ test.describe('Search', async () => {
 test('Autocomplete should work properly with valid search term', async ({pageUnauth}) => {
     
     await test.step('Clicking on the search icon to open search bar', async () => {
-        await pageUnauth.glass.click()
+        await pageUnauth.glass.click();
         })
 
     await test.step('Type search term into search input field', async () => {
@@ -57,10 +57,10 @@ test('Autocomplete should work properly with valid search term', async ({pageUna
     })
 
     await test.step('Search suggestions should include the given term', async () => {
-        let list = await pageUnauth.getSearchSuggestions ()
+        let list = await pageUnauth.getSearchSuggestions ();
         list.forEach(listItem => {
           expect(listItem.toLowerCase()).toContain(data.searchTerm.toLowerCase())
-        })
+        });
     })
 })
 
@@ -86,7 +86,10 @@ test('Search should work properly with valid search term', async ({pageSearch}) 
     });
 
     await test.step('Search result items should include the given term', async () => {
-        await pageSearch.checkSearchResults(data.searchTerm) 
+        let list = await pageSearch.getSearchResults();
+        list.forEach(listItem => {
+        expect(listItem).toContain(data.searchTerm.toLowerCase())
+        })
     });
 
 })

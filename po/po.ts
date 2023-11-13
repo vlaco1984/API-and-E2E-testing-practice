@@ -71,7 +71,7 @@ export class movieDB_base {
     await this.defaultLang.click();
     await this.defaultLangInput.fill(lang);
     await this.langDropdownItem(lang).click();
-    await this.pageRefresh.click()
+    await this.pageRefresh.click();
   }
 
   async openPage () {
@@ -80,23 +80,23 @@ export class movieDB_base {
   
   
   async getLang ():Promise<string> {
-    let langRaw = await this.langSel().textContent()
-    return await langRaw.trim()
+    let langRaw = await this.langSel().textContent();
+    return await langRaw.trim();
   }
 
   async setDefLang () {
     if (await this.getLang()!='en') {
-      await this.setLang('angol (en-US)')
+      await this.setLang('angol (en-US)');
     };
   }
   
   async getMenuData () {
-    let lang = data[await this.getLang()]
+    let lang = data[await this.getLang()];
     return lang.menuData
   }
 
   async getNoResData () {
-    let lang = data[await this.getLang()]
+    let lang = data[await this.getLang()];
     return lang.noResultMessage
   }
 
@@ -117,9 +117,9 @@ export class loginPage extends movieDB_base {
   constructor (page: Page, URL: string) {
     super (page, URL);
     this.URL = URL;
-    this.inputName = page.locator('input#username')
-    this.inputPass = page.locator('input#password')
-    this.loginButton = page.locator('input#login_button')
+    this.inputName = page.locator('input#username');
+    this.inputPass = page.locator('input#password');
+    this.loginButton = page.locator('input#login_button');
   }
 
   async login () {
@@ -141,7 +141,7 @@ export class searchPage extends movieDB_base {
     super (page, URL);
     this.URL = URL;
     this.searchResultPanel = page.locator('div#search_menu_scroller');
-    this.searchResultList = page.locator('div.search_results movie')
+    this.searchResultList = page.locator('div.search_results movie');
     this.searchResultItem = (itemText: string):Locator => {
     return page.locator('div.title',{ hasText: itemText})
    }
@@ -150,21 +150,16 @@ export class searchPage extends movieDB_base {
   async executeSearch (term) {
     await this.searchBar.fill(term);
     await this.page.keyboard.press('Enter');
-    await this.searchResultPanel.waitFor({state: "visible"})
+    await this.searchResultPanel.waitFor({state: "visible"});
   }
 
   async getSearchResults () {
-    let list = await this.searchResultItem().allTextContents();
-    return await list
+    let rawList = await this.searchResultItem().allTextContents();
+    let list = rawList.map(listItem => {
+      return listItem.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '')
+      });  
+    return await list;
     }
-  
-  async checkSearchResults (term) {
-    let list = await this.getSearchResults ()
-    list.forEach(listItem => {
-    expect(listItem.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '')).toContain(term.toLowerCase())
-    })
-  }
-
 }
 
 
