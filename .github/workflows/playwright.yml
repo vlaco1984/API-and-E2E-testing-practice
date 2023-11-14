@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MOVIEDB_ACCESS: yI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.l69bunZBw-Ifr69_oG-6GBIb0F7FUFUJ-taXP2lcM3c
+      MOVIEDB_APIKEY: d71a2265cfe64683adaeeb7ff4e6203e
       MOVIEDB_PASS: hibihabi
       MOVIEDB_USER: vlaco1984
     container:
