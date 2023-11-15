@@ -24,8 +24,10 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright Tests
-      run: xvfb-run npm run test
+    - name: Run Playwright API Tests
+      run: xvfb-run npm run test_api
+    - name: Run Playwright UI Tests
+      run: xvfb-run npm run test_ui
     - uses: actions/upload-artifact@v3
       if: always()
       with:
