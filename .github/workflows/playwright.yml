@@ -1,4 +1,4 @@
-name: Playwright E2E and API Tests 2
+name: Playwright E2E and API Tests
 on:
   push:
     branches: [ main, master ]
