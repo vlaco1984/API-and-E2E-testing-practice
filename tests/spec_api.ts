@@ -69,7 +69,7 @@ let listID: number;
         let res:APIResponse = await contextAuth.get(`3/list/${listID}`);
         let resBody = await res.json();
         console.log(resBody.items);
-        expect(res).toBeOK
+        expect(res).toBeOK;
         expect(resBody.items.length).toBe(1);
         expect(resBody.items[0].id).toBe(movieID.media_id);
     })
@@ -84,8 +84,8 @@ let listID: number;
     await test.step("Array of items should be empty", async () => {
         let res:APIResponse = await contextAuth.get(`3/list/${listID}`);
         let resBody = await res.json();
-        expect(res).toBeOK
-        expect(resBody.items.length).toBe(0)
+        expect(res).toBeOK;
+        expect(resBody.items.length).toBe(0);
     })
 
 })
@@ -103,8 +103,8 @@ test("List should not be created with invalid data", async ({contextAuth}) => {
         })
 
     await test.step("Should be get unsuccessfully response code", async () => {
-        console.log(res.status())
-        expect(res).not.toBeOK
+        console.log(res.status());
+        expect(res).not.toBeOK;
         })   
     
 })
@@ -120,20 +120,20 @@ test ("Empty rated movie list should be empty by default in guest session", asyn
     let rateBody;
     
     await test.step("Get guest ID", async () => {
-        let res:APIResponse = await contextAuth.get('3/authentication/guest_session/new')
+        let res:APIResponse = await contextAuth.get('3/authentication/guest_session/new');
         let resBody = await res.json();
-        guestID = await resBody.guest_session_id
-        expect(res).toBeOK
+        guestID = await resBody.guest_session_id;
+        expect(res).toBeOK;
     })
 
     await test.step("GET Rated Movies succesfully", async () => {
-        let res:APIResponse = await contextAuth.get(`3/guest_session/${guestID}/rated/movies`)
+        let res:APIResponse = await contextAuth.get(`3/guest_session/${guestID}/rated/movies`);
         expect(res).toBeOK;
         rateBody = await res.json();
     })
 
     await test.step("The Rated Movies body should be match with expected data", async () => {
-      expect(rateBody).toStrictEqual(emptyRatedBody)  
+      expect(rateBody).toStrictEqual(emptyRatedBody);  
     })
 })
 
@@ -141,13 +141,13 @@ test ("Rate list should not be got by Invalid guest ID", async ({contextAuth}) =
     let resBody;
 
     await test.step("Get rate list", async () => {
-        let res:APIResponse = await contextAuth.get(`3/guest_session/${invalidGuestID}/rated/movies`)
+        let res:APIResponse = await contextAuth.get(`3/guest_session/${invalidGuestID}/rated/movies`);
         expect(res).toBeOK;
         resBody = await res.json();
-        console.log(resBody)
+        console.log(resBody);
         });
     await test.step("Getting rate list should be unsuccesully", async () => {
-        expect(resBody.success).toBeFalsy
+        expect(resBody.success).toBeFalsy;
     })   
 })
 

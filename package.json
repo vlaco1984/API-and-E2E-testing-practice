@@ -6,7 +6,7 @@
   "scripts": {
     "test_api": "npx playwright test --project api",
     "test_ui": "npx playwright test --project ui",
-    "test": "npm run test_api && npm run test_ui"
+    "test": "npm run test_ui && npm run test_api"
   },
   "repository": {
     "type": "git",

@@ -31,28 +31,28 @@ export class movieDB_base {
     this.dropdownTV = page.locator('a.no_click.k-link.k-menu-link', { hasText: "Tévéműsorok" });
     this.menuItems = (itemText: string): Locator => {
       return page.locator('a.no_click.k-link.k-menu-link', { hasText: itemText }  )
-    }
-    this.glass = page.locator('span.glyphicons_v2.search.blue')
-    this.cookieAccept = page.locator('button#onetrust-accept-btn-handler')
-    this.menu = page.locator('a.no_click.k-link.k-menu-link')
+    };
+    this.glass = page.locator('span.glyphicons_v2.search.blue');
+    this.cookieAccept = page.locator('button#onetrust-accept-btn-handler');
+    this.menu = page.locator('a.no_click.k-link.k-menu-link');
     this.langSel = (itemText: string): Locator => {
       return page.locator('li.translate', { hasText: itemText})
-    },
-    this.defaultLang = page.locator('label#default_language_popup_label')
-    this.defaultLangInput = page.locator('input.k-textbox[aria-owns=default_language_popup_listbox]')
-    this.pageRefresh = page.locator('a.no_click.button.rounded.upcase')
+    };
+    this.defaultLang = page.locator('label#default_language_popup_label');
+    this.defaultLangInput = page.locator('input.k-textbox[aria-owns=default_language_popup_listbox]');
+    this.pageRefresh = page.locator('a.no_click.button.rounded.upcase');
     this.langDropdownItem  = (itemText: string): Locator => {
       return page.locator("#default_language_popup_listbox").getByRole('option', { name: itemText })
-    },
-    this.cookieBar = page.locator('#onetrust-policy'),
-    this.searchBar = page.locator('input#search_v4.k-input')
+    };
+    this.cookieBar = page.locator('#onetrust-policy');
+    this.searchBar = page.locator('input#search_v4.k-input');
     this.searchSugList = (itemText: string): Locator => {
       return page.locator('#search_v4_listbox', { hasText: itemText})
-    },
+    };
     this.searchSugListItem = page.locator('#search_v4_listbox > li')
     this.noSuggestion = (itemText: string): Locator =>  {
       return page.locator('div.k-nodata', { hasText: itemText })
-    }
+    };
   }
 
   async pressButton(key) {
@@ -63,7 +63,7 @@ export class movieDB_base {
   async setLang (lang) {
     for (let i=0; i<Infinity; i++) {
       if (!await this.defaultLang.isVisible()) {
-        await this.langSel().click()
+        await this.langSel().click();
       } else {
         break;
       }
@@ -92,18 +92,18 @@ export class movieDB_base {
   
   async getMenuData () {
     let lang = data[await this.getLang()];
-    return lang.menuData
+    return lang.menuData;
   }
 
   async getNoResData () {
     let lang = data[await this.getLang()];
-    return lang.noResultMessage
+    return lang.noResultMessage;
   }
 
   
 async getSearchSuggestions () {
 let list = await this.searchSugListItem.allTextContents();
-return list
+return list;
 }
 
 
@@ -133,8 +133,8 @@ export class loginPage extends movieDB_base {
 }
 
 export class searchPage extends movieDB_base {
-  readonly searchResultPanel: Locator
-  searchResultItem: any
+  readonly searchResultPanel: Locator;
+  searchResultItem: any;
   searchResultList: Locator;
   
   constructor (page: Page, URL: string) {
@@ -143,7 +143,7 @@ export class searchPage extends movieDB_base {
     this.searchResultPanel = page.locator('div#search_menu_scroller');
     this.searchResultList = page.locator('div.search_results movie');
     this.searchResultItem = (itemText: string):Locator => {
-    return page.locator('div.title',{ hasText: itemText})
+    return page.locator('div.title',{ hasText: itemText});
    }
   }
 
@@ -161,5 +161,3 @@ export class searchPage extends movieDB_base {
     return await list;
     }
 }
-
-
