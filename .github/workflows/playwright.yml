@@ -27,7 +27,7 @@ jobs:
     - name: Run Playwright UI Tests
       run: xvfb-run npm run test_ui
     - name: Run Playwright API Tests
-      run: xvfb-run npm run test_api
+      run: npm run test_api
     - uses: actions/upload-artifact@v3
       if: always()
       with:
