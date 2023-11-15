@@ -29,7 +29,7 @@ test('The language switcher should work properly', async ({pageAuth}) => {
         })
 
     await test.step('The language should be Hungarian', async () => {
-        await expect(await pageAuth.langSel()).toHaveText('hu')
+        await expect(await pageAuth.langSel()).toHaveText('hu');
         })
 
     await test.step('The menu items should be in Hungarian', async () => {
@@ -59,14 +59,14 @@ test('Autocomplete should work properly with valid search term', async ({pageUna
     await test.step('Search suggestions should include the given term', async () => {
         let list = await pageUnauth.getSearchSuggestions ();
         list.forEach(listItem => {
-          expect(listItem.toLowerCase()).toContain(data.searchTerm.toLowerCase())
+          expect(listItem.toLowerCase()).toContain(data.searchTerm.toLowerCase());
         });
     })
 })
 
 test('Autocomplete has no result in case of search term containing special characters', async ({pageUnauth}) => {
     await test.step('Clicking on the search icon to open search bar', async () => {
-        await pageUnauth.glass.click()
+        await pageUnauth.glass.click();
         })
 
     await test.step('Type search term into search input field', async () => {
@@ -88,7 +88,7 @@ test('Search should work properly with valid search term', async ({pageSearch}) 
     await test.step('Search result items should include the given term', async () => {
         let list = await pageSearch.getSearchResults();
         list.forEach(listItem => {
-        expect(listItem).toContain(data.searchTerm.toLowerCase())
+        expect(listItem).toContain(data.searchTerm.toLowerCase());
         })
     });
 
