@@ -166,7 +166,7 @@ test("Rate list should not be got unauthenticated", async ({contextUnauth}) => {
     await test.step("GET Rated Movies by ID not succesfully", async () => {
         let res:APIResponse = await contextUnauth.get(`3/guest_session/${guestID}/rated/movies`);
         expect(res).not.toBeOK();
-        console.log(res.status())
+        console.log(res.status());
         rateBody = await res.json();
         expect(rateBody.success).toBe(false)
     })
@@ -180,7 +180,7 @@ test("Rated movie should be got in the response", async ({contextAuth}) => {
             data: ratingValue
         });
         let resBody = await res.json();
-        expect(resBody.success).toBe(true)
+        expect(resBody.success).toBe(true);
         console.log(resBody)
     })
 
@@ -251,11 +251,11 @@ test.describe("Watch lists", () => {
             let res:APIResponse = await contextAuth.get(`3/account/${accountID}/watchlist/movies`);
             expect(res).toBeOK;
             resBody = await res.json();
-            console.log(resBody)
+            console.log(resBody);
         });
 
         await test.step("Watchlist items should contain the previously requested ID", async () => {
-            expect(resBody.results[0].id).toBe(watchlistData.media_id)
+            expect(resBody.results[0].id).toBe(watchlistData.media_id);
         })
 
         await test.step("Get TV series watchlist", async () => {
@@ -265,7 +265,7 @@ test.describe("Watch lists", () => {
         })
 
         await test.step("TV series watchlist should be empty after adding movie to watchlist", () => {
-            expect(resBody.results.length).toBe(0)
+            expect(resBody.results.length).toBe(0);
         })
     })
 
@@ -280,7 +280,7 @@ test.describe("Watch lists", () => {
         })
 
         await test.step("Should be get unsuccessfully response code", async () => {
-            expect(res).not.toBeOK
+            expect(res).not.toBeOK;
         })
     })
 })
@@ -291,8 +291,8 @@ test.describe("Movie details", () => {
         let res:APIResponse
 
         await test.step("Get Details", async () => {
-            res = await contextUnauth.get(`3/movie/${movieID.media_id}`)
-            console.log(await res.json())
+            res = await contextUnauth.get(`3/movie/${movieID.media_id}`);
+            console.log(await res.json());
         }) 
     })
 })
