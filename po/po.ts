@@ -47,11 +47,11 @@ export class movieDB_base {
     this.cookieBar = page.locator('#onetrust-policy');
     this.searchBar = page.locator('input#search_v4.k-input');
     this.searchSugList = (itemText: string): Locator => {
-      return page.locator('#search_v4_listbox', { hasText: itemText})
+      return page.locator('#search_v4_listbox', { hasText: itemText});
     };
-    this.searchSugListItem = page.locator('#search_v4_listbox > li')
+    this.searchSugListItem = page.locator('#search_v4_listbox > li');
     this.noSuggestion = (itemText: string): Locator =>  {
-      return page.locator('div.k-nodata', { hasText: itemText })
+      return page.locator('div.k-nodata', { hasText: itemText });
     };
   }
 
@@ -156,7 +156,7 @@ export class searchPage extends movieDB_base {
   async getSearchResults () {
     let rawList = await this.searchResultItem().allTextContents();
     let list = rawList.map(listItem => {
-      return listItem.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '')
+      return listItem.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, '');
       });  
     return await list;
     }
